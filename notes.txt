@@ -1,0 +1,18 @@
+Listing Hash1 codes from keystore:
+keytool -list -v -keystore ./android/app/debug.keystore -alias androiddebugkey -storepass android -keypass android
+
+Generating new keystore:
+keytool -genkeypair -v -keystore my-upload-key.keystore -alias my-key-alias -keyalg RSA -keysize 2048 -validity 10000
+
+
+Linking physical device as emulator:
+$ adb devices
+$ adb -s <device name> reverse tcp:8081 tcp:8081
+Automatic linking
+$ adb devices | grep -Eo \"[0-9]\\w+\" | xargs -I {} "adb -s {} reverse tcp:8081 tcp:8081"
+Debug in Chrome
+$ adb reverse tcp:8081 tcp:8081
+
+clean gradle:
+cd ./android
+gradlew clean
