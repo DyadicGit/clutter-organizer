@@ -1,20 +1,16 @@
-import { Reducer, Action } from 'redux';
-import { User } from '@react-native-community/google-signin';
+import { CLEAR, SET_USER } from './actions'
 
-import { UserSetAction, SET_USER } from './actions';
+const initialState = { type: 'NO_AUTH' }
 
-export type UserState = User | null;
-
-const initialState: UserState = null;
-
-export type Actions = UserSetAction;
-
-const reducer: Reducer<UserState, Actions | Action<'ANY'>> = (state = initialState, action) => {
-    switch (action.type) {
-        case SET_USER: {
-            return action.payload;
-        }
+const reducer = (state = initialState, action) => {
+  switch (action.type) {
+    case SET_USER: {
+      return { ...state, ...action.payload }
     }
-    return state;
-};
-export default reducer;
+    case CLEAR: {
+      return initialState
+    }
+  }
+  return state
+}
+export default reducer

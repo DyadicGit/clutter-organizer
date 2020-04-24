@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Image, StyleSheet, Text, TouchableOpacity } from 'react-native'
 
 export const SignInButton: FC<{ onPress: () => void }> = ({ onPress }) => (
   <TouchableOpacity style={styles.container} onPress={onPress} testID="signIn">

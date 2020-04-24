@@ -1,6 +1,6 @@
 import React from 'react'
 import { Alert, StyleSheet, Text, TouchableOpacity } from 'react-native'
-import { signOut } from '../../utils/auth'
+import { signOut } from '../utils/auth'
 
 const logoutPrompt = () =>
   new Promise((resolve, reject) =>
@@ -10,15 +10,10 @@ const logoutPrompt = () =>
     ])
   )
 
-const onSignOut = (callback: () => void) => {
-  logoutPrompt().then(
-    () => signOut().then(callback),
-    () => {}
-  )
-}
+const onSignOut = () => logoutPrompt().then(signOut)
 
-export const SignOutButton = ({ onPress, style = {}, children }) => (
-  <TouchableOpacity onPress={() => onSignOut(onPress)} style={StyleSheet.flatten(style)}>
+export const SignOutButton = ({ style = {}, children }) => (
+  <TouchableOpacity onPress={onSignOut} style={StyleSheet.flatten(style)}>
     {children || <Text>Log out</Text>}
   </TouchableOpacity>
 )

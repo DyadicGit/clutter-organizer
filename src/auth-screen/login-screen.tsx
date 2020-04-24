@@ -1,31 +1,30 @@
 import React, { FC, useCallback, useEffect } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import SplashScreen from 'react-native-splash-screen'
 import { signIn } from '../utils/auth'
-import { useUserState } from './user-state'
-import { Container } from './components/container'
-import { SignOutButton } from './components/sign-out-button'
-import { SignInButton } from './components/sign-in-button'
-import { AccessTokenTestID } from './accessTokenTestID'
+import { useSelector } from 'react-redux';
+import { Container } from '../components/container'
+import { SignOutButton } from '../components/sign-out-button'
+import { SignInButton } from '../components/sign-in-button'
 import { LIZARD } from '../utils/pallete'
+import { checkUserState } from "./user-state";
 
 export const LoginScreen: FC = () => {
-  const [state, resetState] = useUserState()
-
-  const onSignIn = useCallback(() => {
-    signIn().then(resetState)
-  }, [])
+  const auth = useSelector((state) => state.auth)
 
   useEffect(() => {
-    if (state) SplashScreen.hide()
-  }, [state && state.type])
+    checkUserState()
+  }, [])
 
-  if (state === null || (state.type === 'READY' && Object.getOwnPropertyNames(state).length === 1)) {
-    // if (state === null || state.type === 'READY') {
+  const onSignIn = useCallback(() => {
+    signIn().then(checkUserState)
+  }, [])
+
+
+  if (!Object.getOwnPropertyNames(auth).length || (auth.type === 'READY' && Object.getOwnPropertyNames(auth).length === 1)) {
     return <Container />
   }
-
-  if (state.type === 'NO_AUTH') {
+  
+  if (auth.type === 'NO_AUTH') {
     return (
       <Container>
         <View style={styles.signInContent}>
@@ -37,10 +36,9 @@ export const LoginScreen: FC = () => {
 
   return (
     <Container>
-      <SignOutButton onPress={resetState} style={styles.logoutButton}>
-        <Text>Log out {JSON.stringify(state.user.user.name).replace(/^.|.$/g, '')}</Text>
+      <SignOutButton style={styles.logoutButton}>
+        <Text>Log out {JSON.stringify(auth.user.user.name).replace(/^.|.$/g, '')}</Text>
       </SignOutButton>
-      {__DEV__ && <AccessTokenTestID />}
     </Container>
   )
 }

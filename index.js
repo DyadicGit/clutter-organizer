@@ -5,10 +5,10 @@ import { applyMiddleware, combineReducers, createStore } from 'redux'
 import { combineEpics, createEpicMiddleware } from 'redux-observable'
 import App from './App'
 import { name as appName } from './app.json'
-import user from './src/user/reducer'
+import auth from './src/user/reducer'
 
 export const rootEpic = combineEpics()
-export const rootReducer = combineReducers({ user })
+export const rootReducer = combineReducers({ auth })
 
 const epicMiddleware = createEpicMiddleware()
 export const store = createStore(rootReducer, applyMiddleware(epicMiddleware))

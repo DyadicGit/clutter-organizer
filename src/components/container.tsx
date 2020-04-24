@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react'
 import { ActivityIndicator, Animated, SafeAreaView, StyleSheet, Text, View, ViewProps } from 'react-native'
 import { Header } from './brand-header'
-import { LIZARD } from '../../utils/pallete'
+import { LIZARD } from '../utils/pallete'
 
 export const Indicator: FC = () => {
   const [fade] = useState(new Animated.Value(0))

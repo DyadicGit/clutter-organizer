@@ -12,6 +12,7 @@
     "set:prod": "SET ENVFILE=.env.production",
     "debug:chrome": "adb reverse tcp:8081 tcp:8081",
     "openMenu": "adb shell input keyevent 82 | echo http://localhost:8081/debugger-ui/",
+    "listDevices": "adb devices",
     "linkDeviceAuto": "adb devices | grep -Eo \\\"[0-9]\\\\w+\\\" | xargs -I {} \"adb -s {} reverse tcp:8081 tcp:8081\""
   },
   "dependencies": {

@@ -4,9 +4,11 @@ import { showNoInternetAlert, showSignInErrorAlert } from './alert'
 import { checkNetwork } from './internet-service'
 import { Platform } from 'react-native'
 import handleError from './handleError'
+import { store } from "../../index";
+import { clearState } from "../user/actions";
 
 GoogleSignin.configure(googleSignInConfig)
-const memo = <T = any>(func: () => Promise<T>) => {
+const throttle = <T = any>(func: () => Promise<T>) => {
   let promise: Promise<T> | null = null
   const clear = () => {
     promise = null
@@ -21,15 +23,14 @@ const memo = <T = any>(func: () => Promise<T>) => {
   }
 }
 
-export const currentUser = memo(async () => ((await GoogleSignin.isSignedIn()) ? GoogleSignin.getCurrentUser() : null))
+export const currentUser = throttle(async () => ((await GoogleSignin.isSignedIn()) ? GoogleSignin.getCurrentUser() : null))
 
-export const signInSilently = memo(async () => {
+export const signInSilently = throttle(async () => {
   const user = await GoogleSignin.signInSilently()
-  console.log('user', user)
   return (user) || null
 })
 
-export const accessToken = memo(async () => ((await GoogleSignin.isSignedIn()) && (await GoogleSignin.getTokens()).accessToken) || null)
+export const accessToken = throttle(async () => ((await GoogleSignin.isSignedIn()) && (await GoogleSignin.getTokens()).accessToken) || null)
 
 const trySignIn = async (retry = 0): Promise<void> => {
   try {
@@ -48,19 +49,19 @@ const trySignIn = async (retry = 0): Promise<void> => {
   }
 }
 
-export const signIn = memo(async () => {
+export const signIn = throttle(async () => {
   await checkNetwork(showNoInternetAlert)
   await GoogleSignin.hasPlayServices()
 
   return await trySignIn()
 })
 
-export const signOut = memo(async () => {
+export const signOut = throttle(async () => {
   await GoogleSignin.signOut()
-  //set global state to initial
+  store.dispatch(clearState())
 })
 
-export const refreshToken = memo(async () => {
+export const refreshToken = throttle(async () => {
   await GoogleSignin.clearCachedAccessToken((await GoogleSignin.getTokens()).accessToken)
   return accessToken()
 })
