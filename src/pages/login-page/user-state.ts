@@ -1,9 +1,9 @@
 import { User } from '@react-native-community/google-signin'
-import { signInSilently } from '../utils/auth'
-import { checkNetwork } from '../utils/internet-service'
-import { showNoInternetAlert } from '../utils/alert'
-import { setUser } from "../user/actions";
-import { store } from "../../index";
+import { signInSilently } from '../../utils/auth'
+import { checkNetwork } from '../../utils/internet-service'
+import { showNoInternetAlert } from '../../utils/alert'
+import { setUser } from "../../user/actions";
+import { store } from "../../../index";
 
 export const checkUserState = async (): Promise<void> => {
   await checkNetwork(showNoInternetAlert)

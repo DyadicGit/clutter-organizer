@@ -1,14 +1,14 @@
 import React, { FC, useCallback, useEffect } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import { signIn } from '../utils/auth'
+import { signIn } from '../../utils/auth'
 import { useSelector } from 'react-redux';
-import { Container } from '../components/container'
-import { SignOutButton } from '../components/sign-out-button'
-import { SignInButton } from '../components/sign-in-button'
-import { LIZARD } from '../utils/pallete'
+import { Container } from '../../components/container'
+import { SignOutButton } from '../../components/sign-out-button'
+import { SignInButton } from '../../components/sign-in-button'
+import { LIZARD } from '../../utils/pallete'
 import { checkUserState } from "./user-state";
 
-export const LoginScreen: FC = () => {
+const LoginPage: FC = () => {
   const auth = useSelector((state) => state.auth)
 
   useEffect(() => {
@@ -23,7 +23,7 @@ export const LoginScreen: FC = () => {
   if (!Object.getOwnPropertyNames(auth).length || (auth.type === 'READY' && Object.getOwnPropertyNames(auth).length === 1)) {
     return <Container />
   }
-  
+
   if (auth.type === 'NO_AUTH') {
     return (
       <Container>
@@ -56,3 +56,5 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   }
 })
+
+export default LoginPage
